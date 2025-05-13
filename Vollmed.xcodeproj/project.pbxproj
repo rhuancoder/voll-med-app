@@ -25,6 +25,7 @@
 		A78D3E7B2D94C092004A9778 /* ScheduleAppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D3E7A2D94C092004A9778 /* ScheduleAppointmentView.swift */; };
 		A78D3E802D94C931004A9778 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D3E7F2D94C931004A9778 /* Date+.swift */; };
 		A78D3E822D94CB67004A9778 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D3E812D94CB67004A9778 /* String+.swift */; };
+		A7C4D34B2DD2C8C2000BB396 /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C4D34A2DD2C8C2000BB396 /* Patient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		A78D3E7A2D94C092004A9778 /* ScheduleAppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleAppointmentView.swift; sourceTree = "<group>"; };
 		A78D3E7F2D94C931004A9778 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		A78D3E812D94CB67004A9778 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		A7C4D34A2DD2C8C2000BB396 /* Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				484BEEFC2AB0F5750033C07A /* Specialist.swift */,
 				A742CD0C2D95F5E2002C76E7 /* ScheduleAppointment.swift */,
 				A75912F02D9DF9F0006657C0 /* Appointment.swift */,
+				A7C4D34A2DD2C8C2000BB396 /* Patient.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7C4D34B2DD2C8C2000BB396 /* Patient.swift in Sources */,
 				A75912F12D9DF9F0006657C0 /* Appointment.swift in Sources */,
 				A78D3E802D94C931004A9778 /* Date+.swift in Sources */,
 				A742CD0D2D95F5E2002C76E7 /* ScheduleAppointment.swift in Sources */,

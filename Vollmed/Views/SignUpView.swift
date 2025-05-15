@@ -9,12 +9,16 @@ import SwiftUI
 
 struct SignUpView: View {
     
+    let service = WebService()
+    
     @State private var name: String = ""
     @State private var email: String = ""
     @State private var cpf: String = ""
     @State private var phoneNumber: String = ""
     @State private var healthPlan: String
     @State private var password: String = ""
+    @State private var showAlert: Bool = false
+    @State private var isPatientRegistered: Bool = false
     
     let healthPlans: [String] = [
         "Amil", "Unimed", "Bradesco Saúde", "SulAmérica", "Hapvida", "Notredame Intermédica", "São Francisco Saúde", "Golden Cross", "Medial Saúde", "América Saúde", "Outro"
@@ -22,6 +26,22 @@ struct SignUpView: View {
     
     init() {
         self.healthPlan = healthPlans[0]
+    }
+    
+    func register() async {
+        let patient = Patient(id: nil, cpf: cpf, name: name, email: email, password: password, phoneNumber: phoneNumber, healthPlan: healthPlan)
+        do {
+            if let _ = try await service.registerPatient(patient: patient) {
+                isPatientRegistered = true
+                print("Paciente cadastrado com sucesso!")
+            } else {
+              isPatientRegistered = false
+            }
+        } catch {
+            isPatientRegistered = false
+            print("Ocorreu um erro ao cadastrar paciente: \(error.localizedDescription)")
+        }
+        showAlert = true
     }
     
     var body: some View {
@@ -111,7 +131,9 @@ struct SignUpView: View {
                 }
                 
                 Button {
-                    print(healthPlan)
+                    Task {
+                        await register()
+                    }
                 } label: {
                     ButtonView(text: "Cadastrar")
                 }
@@ -128,6 +150,18 @@ struct SignUpView: View {
         }
         .navigationBarBackButtonHidden()
         .padding()
+        .alert(isPatientRegistered ? "Sucesso!" : "Ops, algo deu errado!", isPresented: $showAlert, presenting: $isPatientRegistered) { _ in
+            Button(action: {}, label: {
+                Text("Ok")
+            })
+        } message: { _ in
+            if isPatientRegistered {
+                Text("O paciente foi cadastrado com sucesso!")
+            } else {
+                Text("Houve um erro ao cadastrar o paciente. Por favor, tente novamente.")
+            }
+        }
+
     }
 }
 

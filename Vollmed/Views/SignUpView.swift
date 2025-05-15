@@ -19,6 +19,7 @@ struct SignUpView: View {
     @State private var password: String = ""
     @State private var showAlert: Bool = false
     @State private var isPatientRegistered: Bool = false
+    @State private var navigateToSignInView: Bool = false
     
     let healthPlans: [String] = [
         "Amil", "Unimed", "Bradesco Saúde", "SulAmérica", "Hapvida", "Notredame Intermédica", "São Francisco Saúde", "Golden Cross", "Medial Saúde", "América Saúde", "Outro"
@@ -33,7 +34,6 @@ struct SignUpView: View {
         do {
             if let _ = try await service.registerPatient(patient: patient) {
                 isPatientRegistered = true
-                print("Paciente cadastrado com sucesso!")
             } else {
               isPatientRegistered = false
             }
@@ -151,7 +151,9 @@ struct SignUpView: View {
         .navigationBarBackButtonHidden()
         .padding()
         .alert(isPatientRegistered ? "Sucesso!" : "Ops, algo deu errado!", isPresented: $showAlert, presenting: $isPatientRegistered) { _ in
-            Button(action: {}, label: {
+            Button(action: {
+                navigateToSignInView = true
+            }, label: {
                 Text("Ok")
             })
         } message: { _ in
@@ -161,7 +163,9 @@ struct SignUpView: View {
                 Text("Houve um erro ao cadastrar o paciente. Por favor, tente novamente.")
             }
         }
-
+        .navigationDestination(isPresented: $navigateToSignInView) {
+            SignInView()
+        }
     }
 }
 

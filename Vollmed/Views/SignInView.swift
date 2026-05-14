@@ -18,7 +18,10 @@ struct SignInView: View {
     func login() async {
         do {
             if let response = try await service.loginPatient(email: email, password: password) {
-                print("Login realizado com sucesso: \(response)")
+                UserDefaultsHelper.save(value: response.token, key: "token")
+                UserDefaultsHelper.save(value: response.id, key: "patient-id")
+                
+                
             } else {
                 showAlert = true
             }
@@ -82,7 +85,6 @@ struct SignInView: View {
                 Text("Ainda não possui uma conta? Cadastre-se.")
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .center)
-                
             }
 
         }

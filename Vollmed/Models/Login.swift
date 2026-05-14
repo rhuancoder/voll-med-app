@@ -17,14 +17,8 @@ struct LoginRequest: Codable {
     }
 }
 
-struct LoginResponse: Codable {
+struct LoginResponse: Identifiable, Codable {
     let auth: Bool
-    let path: String
+    let id: String
     let token: String
-    
-    enum CodingKeys: String, CodingKey {
-        case auth
-        case path = "rota"
-        case token
-    }
 }

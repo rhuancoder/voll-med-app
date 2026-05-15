@@ -7,12 +7,36 @@
 
 import UIKit
 
-let patientID: String = "b3e789f1-5287-4fc0-a3ac-c62c6a612e1f"
-
 struct WebService {
     
     private let baseURL = "http://localhost:3000"
     private let imageCache = NSCache<NSString, UIImage>()
+    
+    func logoutPatient() async throws -> Bool {
+        let endpoint = "\(baseURL)/auth/logout"
+        
+        guard let url = URL(string: endpoint)  else {
+            print("Erro na URL!")
+            return false
+        }
+        
+        guard let token = UserDefaultsHelper.get(for: "token") else {
+            print("Token não informado!")
+            return false
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            return true
+        }
+        
+        return false
+    }
     
     func loginPatient(email: String, password: String) async throws -> LoginResponse? {
         let endpoint = "\(baseURL)/auth/login"
@@ -68,6 +92,11 @@ struct WebService {
             return false
         }
         
+        guard let token = UserDefaultsHelper.get(for: "token") else {
+            print("Token não informado!")
+            return false
+        }
+        
         let requestData: [String: String] = ["motivoCancelamento": reasonToCancel]
         
         let jsonData = try JSONSerialization.data(withJSONObject: requestData)
@@ -75,6 +104,7 @@ struct WebService {
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue( "application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
         
         let (_, response) = try await URLSession.shared.data(for: request)
@@ -94,6 +124,11 @@ struct WebService {
             return nil
         }
         
+        guard let token = UserDefaultsHelper.get(for: "token") else {
+            print("Token não informado!")
+            return nil
+        }
+        
         let requestData: [String: String] = ["data": date]
         
         let jsonData = try JSONSerialization.data(withJSONObject: requestData)
@@ -101,6 +136,7 @@ struct WebService {
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.setValue( "application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
         
         let (data, _) = try await URLSession.shared.data(for: request)
@@ -113,12 +149,21 @@ struct WebService {
     func getAllAppointmentsFromPatient(patientID: String) async throws -> [Appointment]? {
         let endpoint = "\(baseURL)/paciente/\(patientID)/consultas"
         
+        guard let token = UserDefaultsHelper.get(for: "token") else {
+            print("Token não informado!")
+            return nil
+        }
+        
         guard let url = URL(string: endpoint) else {
             print("Erro na URL!")
             return nil
         }
         
-        let (data, _) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
         
         let appointments = try JSONDecoder().decode([Appointment].self, from: data)
         
@@ -133,6 +178,11 @@ struct WebService {
             return nil
         }
         
+        guard let token = UserDefaultsHelper.get(for: "token") else {
+            print("Token não informado!")
+            return nil
+        }
+        
         let appointment = ScheduleAppointmentRequest(specialist: specialistID, patient: patientID, date: date)
         
         let jsonData = try JSONEncoder().encode(appointment)
@@ -140,6 +190,7 @@ struct WebService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
         
         let (data, _) = try await URLSession.shared.data(for: request)

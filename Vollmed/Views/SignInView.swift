@@ -20,8 +20,6 @@ struct SignInView: View {
             if let response = try await service.loginPatient(email: email, password: password) {
                 UserDefaultsHelper.save(value: response.token, key: "token")
                 UserDefaultsHelper.save(value: response.id, key: "patient-id")
-                
-                
             } else {
                 showAlert = true
             }

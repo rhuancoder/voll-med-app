@@ -12,7 +12,7 @@ struct HomeView: View {
     let service = WebService()
     var authManager = AuthenticationManager.shared
     
-    @State var specialists: [Specialist] = []
+    @State private var specialists: [Specialist] = []
     
     func getSpecialists() async {
         do {
@@ -22,7 +22,6 @@ struct HomeView: View {
         } catch {
             print("Ocorreu um erro ao obter os especialistas: \(error)")
         }
-        
     }
     
     func logout() async {

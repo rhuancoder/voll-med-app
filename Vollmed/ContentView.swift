@@ -25,7 +25,8 @@ struct ContentView: View {
                 .tabItem {
                     Label(
                         title: { Text("Home") },
-                        icon: { Image(systemName: "house")})
+                        icon: { Image(systemName: "house") }
+                    )
                 }
                 
                 NavigationStack {
@@ -34,7 +35,8 @@ struct ContentView: View {
                 .tabItem {
                     Label(
                         title: { Text("Minhas consultas") },
-                        icon: { Image(systemName: "calendar")})
+                        icon: { Image(systemName: "calendar") }
+                    )
                 }
             }
         }

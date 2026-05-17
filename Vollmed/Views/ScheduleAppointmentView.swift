@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ScheduleAppointmentView: View {
     
-    @Environment(\.presentationMode) var presentationMode
     let service = WebService()
     var authManager = AuthenticationManager.shared
+
     var specialistID: String
     var isRescheduleView: Bool
     var appointmentID: String?
+    
     @State private var selectedDate: Date = Date()
     @State private var showAlert: Bool = false
     @State private var isAppointmentScheduled: Bool = false
@@ -49,8 +50,7 @@ struct ScheduleAppointmentView: View {
         do {
             if let _ = try await  service.scheduleAppointment(specialistID: specialistID, patientID: patientID, date: selectedDate.convertToString()) {
                 isAppointmentScheduled = true
-            }
-            else {
+            } else {
                 isAppointmentScheduled = false
             }
         } catch {
@@ -91,9 +91,7 @@ struct ScheduleAppointmentView: View {
             UIDatePicker.appearance().minuteInterval = 15
         }
         .alert(isAppointmentScheduled ? "Sucesso!" : "Ops, algo deu errado!", isPresented: $showAlert, presenting: isAppointmentScheduled) { _ in
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
+            Button(action: {}, label: {
                 Text("Ok")
             })
         } message: { isScheduled in
@@ -103,7 +101,6 @@ struct ScheduleAppointmentView: View {
                 Text("Houve um erro ao \(isRescheduleView ? "reagendar" : "agendar") a sua consulta. Por favor tente novamente ou entre em contato via telefone.")
             }
         }
-
     }
 }
 

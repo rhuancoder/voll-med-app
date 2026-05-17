@@ -40,14 +40,14 @@ struct MyAppointmentsView: View {
                         SpecialistCardView(specialist: appointment.specialist, appointment: appointment)
                     }
                 }
-                .navigationTitle("Minhas consultas")
-                .navigationBarTitleDisplayMode(.large)
-                .padding()
-                .onAppear {
-                    Task {
-                        await getAllAppointments()
-                    }
-                }
+            }
+        }
+        .navigationTitle("Minhas consultas")
+        .navigationBarTitleDisplayMode(.large)
+        .padding()
+        .onAppear {
+            Task {
+                await getAllAppointments()
             }
         }
     }
